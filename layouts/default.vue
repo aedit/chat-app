@@ -11,10 +11,10 @@ export default {
   
 }
 </script>
-<style scoped>
+<style>
 .def-layout{
   display: grid;
-  height: 100vh;
+  /* height: 100vh; */
   width: 100%;
   grid-template-areas: 'top-bar top-bar'
   'side-bar main';
