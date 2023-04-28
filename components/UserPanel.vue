@@ -3,7 +3,7 @@
     :class="[isUserPanelOpened ? 'w-1/3' : 'w-1/5', 'ease bg-white shadow']"
   >
     <div
-      class="bg-blue-500 text-white p-2 flex justify-center cursor-pointer"
+      class="bg-blue-300 text-white p-2 flex justify-center cursor-pointer"
       @click="isUserPanelOpened = !isUserPanelOpened"
     >
       <span class="border-white border-2 rounded-full mr-2">
@@ -18,10 +18,10 @@
         class="user-card border-b-2 border-gray-200 mt-2"
       >
         <div
-          class="flex items-center justify-center capitalize text-gray-600 text-sm font-semibold"
+          class="user-role flex items-center justify-center capitalize text-gray-600 text-xs font-semibold"
         >
           <span>{{ role }}</span>
-          <span class="text-xs rounded-lg bg-gray-200 px-2 ml-2">{{
+          <span class="user-role__badge text-xs rounded-full text-white ml-2">{{
             userArr.length
           }}</span>
         </div>
@@ -42,13 +42,13 @@
                 :src="user.picture"
                 :alt="user.name"
               />
-              <span v-else class="user-initials inline-flex justify-center items-center bg-blue-200 rounded-xl text-lg text-blue-800 text-bold">
+              <span v-else class="user-initials inline-flex justify-center items-center rounded-xl text-2xl text-bold">
                 {{ getInitials(user.name) }}
               </span>
             </span>
             <span
               v-if="user.status"
-              class="bg-gray-300 -mt-3 z-10 rounded-xl text-xs px-3 py-1 text-center"
+              class="user-status__tag -mt-3 z-10 rounded-xl text-xs px-3 py-1 text-center"
               >{{ user.status }}</span
             >
           </div>
@@ -56,13 +56,13 @@
             v-if="isUserPanelOpened"
             class="user-info -mt-2 flex flex-1 flex-col gap-1 capitalize justify-center"
           >
-            <span class="text-md">
+            <span class="user-info__name">
               {{ user.name }}
-              <span class="border-gray-200 border-2 text-xs rounded-lg px-2">
+              <span class="user-info__tag px-2">
                 {{ user.department }}
               </span>
             </span>
-            <span class="text-gray-400 text-sm">{{ user.location }}</span>
+            <span class="user-info__location text-sm">{{ user.location }}</span>
           </div>
           <div
             v-if="isUserPanelOpened"
@@ -71,7 +71,7 @@
             <span
               class="p-2 rounded-lg border-2 border-gray-100 hover:border-gray-400 cursor-pointer"
             >
-              <img :class="[isUserPanelOpened? 'active':'inactive']" class="chat-icon w-7" :src="chatIcon" alt="" />
+              <img :class="[isUserPanelOpened? 'active':'inactive']" class="chat-icon w-7" :src="chatIcon(user.isOnline)" alt="" />
             </span>
           </div>
         </div>
@@ -83,18 +83,23 @@
 <script>
 import leftArrow from '@/assets/icons/chevron_left.svg'
 import rightArrow from '@/assets/icons/chevron_right.svg'
-import chatIcon from '@/assets/icons/chat.svg'
+import chatActive from '@/assets/icons/chat.svg'
+import chatInactive from '@/assets/icons/chatInactive.svg'
 
 export default {
   data() {
     return {
-      isUserPanelOpened: true,
-      chatIcon,
+      isUserPanelOpened: true
     }
   },
   computed: {
     icon() {
       return this.isUserPanelOpened ? rightArrow : leftArrow
+    },
+    chatIcon () {
+      return (val) => {
+        return val ? chatInactive: chatActive 
+      }
     },
     usersMap() {
       const users = this.$store.state.users
@@ -133,8 +138,48 @@ export default {
   min-width: 112px;
 }
 
-.user-initials, .user-image {
-  min-height: 60px;
-  min-width: 60px;
+.user-role{
+  color: #a3a3a3;
 }
+
+.user-role__badge{
+  background: #A5A2A2;
+  font-size: 11px;
+  padding: 1px 8px;
+}
+
+.user-initials, .user-image {
+  min-height: 65px;
+  min-width: 65px;
+  color: #F2994A;
+  background: #F2C94C5E;
+  font-weight: 500;
+}
+
+.user-status__tag{
+background: #F9F9F9;
+backdrop-filter: blur(3.5px);
+font-size: 9px;
+line-height: 14px;
+}
+.user-info__name{
+  font-weight: 500;
+  font-size: 15px;
+  color: #000;
+  text-transform: capitalize;
+}
+.user-info__tag{
+  border: 1px solid #cfcfcf;
+  background: 0 0;
+  border-radius: 20px;
+  font-size: 10px;
+  color: #7b7d86;
+  font-size: 11px;
+  color: #9597A1;
+}
+
+.user-info__location{
+  color: #9597A1;
+}
+
 </style>

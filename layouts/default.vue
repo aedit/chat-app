@@ -20,7 +20,7 @@ export default {
   'side-bar main';
   grid-template-rows: 52px 1fr;
   grid-template-columns: 400px 1fr; 
-  font-family: Helvetica, sans-serif;
+  font-family: 'Poppins';
 }
 
 .top-bar{
